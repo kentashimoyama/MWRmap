@@ -1,0 +1,58 @@
+10-02 14:45:03 >> LaneDet: gap cd = 3, len cd = 8
+10-02 14:45:04 >> Camera: <Camera at 0x26760a44410>
+image size = (1280, 720)
+image size mini = (1280, 720)
+camera mat = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+camera mat mini = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+do undistort = True
+undistort dist = [-0.00581053 -0.00275994 -0.0147153   0.02229724  0.01747018  0.00414806
+  0.00542942  0.00993107 -0.02302616  0.00131315  0.00866005  0.00088481
+  0.01059735  0.05109549]
+
+10-02 14:45:04 >> IPE: set init rot = (0.0, 0.0, 0.0)
+10-02 14:45:04 >> IPE: set init height = 1.0
+10-02 14:45:04 >> IPE: sample points path 'None'
+10-02 14:45:04 >> IPE: sample points total = 0
+10-02 14:45:04 >> Frame: save image 'lk_match/180640.000.jpg'
+10-02 14:45:04 >> Frame: save image 'lk_match/180641.000.jpg'
+10-02 14:45:04 >> Frame: save image 'lk_match/180642.000.jpg'
+10-02 14:45:04 >> Frame: save image 'lk_match/180643.000.jpg'
+10-02 14:45:05 >> Frame: save image 'lk_match/180644.000.jpg'
+10-02 14:45:05 >> Frame: save image 'lk_match/180645.000.jpg'
+10-02 14:45:05 >> Frame: save image 'lk_match/180646.000.jpg'
+10-02 14:45:05 >> Frame: save image 'lk_match/180647.000.jpg'
+10-02 14:45:46 >> LaneDet: gap cd = 3, len cd = 8
+10-02 14:45:46 >> Camera: <Camera at 0x13a5e86e870>
+image size = (1280, 720)
+image size mini = (1280, 720)
+camera mat = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+camera mat mini = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+do undistort = True
+undistort dist = [-0.00581053 -0.00275994 -0.0147153   0.02229724  0.01747018  0.00414806
+  0.00542942  0.00993107 -0.02302616  0.00131315  0.00866005  0.00088481
+  0.01059735  0.05109549]
+
+10-02 14:45:46 >> IPE: set init rot = (0.0, 0.0, 0.0)
+10-02 14:45:46 >> IPE: set init height = 1.0
+10-02 14:45:46 >> IPE: sample points path 'None'
+10-02 14:45:46 >> IPE: sample points total = 0
+10-02 14:45:46 >> Frame: save image 'lk_match/180640.000.jpg'
+10-02 14:45:47 >> Frame: save image 'lk_match/180641.000.jpg'
+10-02 14:45:47 >> Frame: save image 'lk_match/180642.000.jpg'
+10-02 14:45:47 >> Frame: save image 'lk_match/180643.000.jpg'
+10-02 14:45:47 >> Frame: save image 'lk_match/180644.000.jpg'
+10-02 14:45:47 >> Frame: save image 'lk_match/180645.000.jpg'
+10-02 14:45:47 >> Frame: save image 'lk_match/180646.000.jpg'
+10-02 14:45:47 >> Frame: save image 'lk_match/180647.000.jpg'

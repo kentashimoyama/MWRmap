@@ -1,0 +1,4 @@
+10-02 14:04:23 >> LaneDet: gap cd = 3, len cd = 8
+10-02 14:04:25 >> LaneDet: gap cd = 3, len cd = 8
+10-02 14:04:35 >> LaneDet: gap cd = 3, len cd = 8
+10-02 14:04:53 >> LaneDet: gap cd = 3, len cd = 8

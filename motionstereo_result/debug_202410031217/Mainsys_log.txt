@@ -1,0 +1,67 @@
+10-03 12:17:50 >> LaneDet: gap cd = 3, len cd = 8
+10-03 12:17:50 >> Camera: <Camera at 0x1327ee0aab0>
+image size = (1280, 720)
+image size mini = (1280, 720)
+camera mat = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+camera mat mini = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+do undistort = True
+undistort dist = [-0.00581053 -0.00275994 -0.0147153   0.02229724  0.01747018  0.00414806
+  0.00542942  0.00993107 -0.02302616  0.00131315  0.00866005  0.00088481
+  0.01059735  0.05109549]
+
+10-03 12:17:50 >> IPE: set init rot = (0.0, 0.0, 0.0)
+10-03 12:17:50 >> IPE: set init height = 1.0
+10-03 12:17:50 >> IPE: sample points path 'None'
+10-03 12:17:50 >> IPE: sample points total = 0
+10-03 12:17:50 >> Frame: save image 'lk_match/180640.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180641.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180642.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180643.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180644.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180645.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180646.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180647.000.jpg'
+10-03 12:17:51 >> Frame: save image 'lk_match/180648.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180649.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180650.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180651.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180652.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180653.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180654.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180655.000.jpg'
+10-03 12:17:52 >> Frame: save image 'lk_match/180656.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180657.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180658.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180659.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180700.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180701.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180702.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180703.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180704.000.jpg'
+10-03 12:17:53 >> Frame: save image 'lk_match/180705.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180706.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180707.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180708.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180709.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180710.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180711.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180712.000.jpg'
+10-03 12:17:54 >> Frame: save image 'lk_match/180713.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180714.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180715.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180716.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180717.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180718.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180719.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180720.000.jpg'
+10-03 12:17:55 >> Frame: save image 'lk_match/180721.000.jpg'
+10-03 12:17:56 >> Frame: save image 'lk_match/180722.000.jpg'
+10-03 12:17:56 >> Frame: save image 'lk_match/180723.000.jpg'
+10-03 12:17:56 >> Frame: save image 'lk_match/180724.000.jpg'
+10-03 12:17:56 >> Frame: save image 'lk_match/180725.000.jpg'

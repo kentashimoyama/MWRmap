@@ -1,0 +1,2 @@
+09-03 15:54:29 >> LaneDet: gap cd = 3, len cd = 8
+09-03 15:54:42 >> LaneDet: gap cd = 3, len cd = 8

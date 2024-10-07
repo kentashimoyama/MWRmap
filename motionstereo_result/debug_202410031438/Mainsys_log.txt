@@ -1,0 +1,23 @@
+10-03 14:38:47 >> LaneDet: gap cd = 3, len cd = 8
+10-03 14:38:47 >> Camera: <Camera at 0x287ee9c9760>
+image size = (1280, 720)
+image size mini = (1280, 720)
+camera mat = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+camera mat mini = 
+[[617.7335    0.      647.28534]
+ [  0.      618.1137  369.3322 ]
+ [  0.        0.        1.     ]]
+do undistort = True
+undistort dist = [-0.00581053 -0.00275994 -0.0147153   0.02229724  0.01747018  0.00414806
+  0.00542942  0.00993107 -0.02302616  0.00131315  0.00866005  0.00088481
+  0.01059735  0.05109549]
+
+10-03 14:38:47 >> IPE: set init rot = (0.0, 0.0, 0.0)
+10-03 14:38:47 >> IPE: set init height = 1.0
+10-03 14:38:47 >> IPE: sample points path 'None'
+10-03 14:38:47 >> IPE: sample points total = 0
+10-03 14:38:47 >> Frame: save image 'lk_match/181320.000.jpg'
+10-03 14:38:48 >> Frame: save image 'lk_match/181321.000.jpg'
