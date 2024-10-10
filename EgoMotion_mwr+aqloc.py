@@ -116,7 +116,7 @@ if __name__ == '__main__':
     cosfitting = False
     MELCOdir = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc/"
     # file_list = ["symbols_0907_1left_extracted_2.csv", "symbols_0907_1right_extracted_2.csv", "symbols_0907_2left_extracted_2.csv", "symbols_0907_2right_extracted_2.csv", "symbols_0907_3left_extracted_2.csv", "symbols_0907_3right_extracted_2.csv"]
-    file_list = [ "symbols_0907_2left_extracted_2.csv", "symbols_0907_2right_extracted_2.csv"]
+    file_list = ["symbols_0907_1left_extracted_2.csv", "symbols_0907_2left_extracted_2.csv", "symbols_0907_3left_extracted_2.csv", "symbols_0907_1right_extracted_2.csv", "symbols_0907_2right_extracted_2.csv", "symbols_0907_3right_extracted_2.csv"]
     for file in file_list:
         MELCOfile = MELCOdir + file
 

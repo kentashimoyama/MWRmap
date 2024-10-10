@@ -164,9 +164,9 @@ def grid_line(grid_min_x, grid_min_y ,grid_max_x, grid_max_y, grid_num_x, grid_n
 # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_0717_agawall_1_left_80azi_cosinlier.csv"
 # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_0717_tennis_1_withoutlier_right.csv"
 # csv_file_path_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3right.csv"]
-csv_file_path_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2right.csv"]
+csv_file_path_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3right.csv"]
 
-
+visualize = False
 
 
 
@@ -199,42 +199,43 @@ for csv_file_path in csv_file_path_list:
     # フィルタリング結果を表示
     print(f"extracted points: {filtered_points.shape[0]}")
 
-    # filtered_points = np.column_stack((filtered_points, np.zeros(filtered_points.shape[0], dtype=int)))
+    if visualize:
+        # filtered_points = np.column_stack((filtered_points, np.zeros(filtered_points.shape[0], dtype=int)))
 
-    # Open3Dを使ってフィルタリング結果を可視化
-    # pcd_filterd = o3d.geometry.PointCloud()
-    # pcd_filterd.points = o3d.utility.Vector3dVector(filtered_points)
-    # pcd_filterd.paint_uniform_color([0, 1, 0])
-    #o3d.visualization.draw_geometries([pcd_filterd])
+        # Open3Dを使ってフィルタリング結果を可視化
+        # pcd_filterd = o3d.geometry.PointCloud()
+        # pcd_filterd.points = o3d.utility.Vector3dVector(filtered_points)
+        # pcd_filterd.paint_uniform_color([0, 1, 0])
+        #o3d.visualization.draw_geometries([pcd_filterd])
 
-    # pltによる元の点群の可視化
-    plt.subplot(1, 2, 1)  # 1行2列のレイアウトで1番目のプロット
-    plt.scatter(world_pos[:, 0], world_pos[:, 1], s=1, c='blue', alpha=0.5, label='mwr_points')
-    plt.title('azimuth_amp_coscurve')
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
-    plt.legend()
-    grid_size_x = 0.05
-    grid_size_y = 0.05
-    # plt.xticks(np.arange(-32720, -32680, grid_size_x))
-    # plt.yticks(np.arange(-10155, -10105, grid_size_y))
-    plt.grid(True)  # グリッドの表示
+        # pltによる元の点群の可視化
+        plt.subplot(1, 2, 1)  # 1行2列のレイアウトで1番目のプロット
+        plt.scatter(world_pos[:, 0], world_pos[:, 1], s=1, c='blue', alpha=0.5, label='mwr_points')
+        plt.title('original cloudpoints')
+        plt.xlabel('X-axis')
+        plt.ylabel('Y-axis')
+        plt.legend()
+        grid_size_x = 0.05
+        grid_size_y = 0.05
+        # plt.xticks(np.arange(-32720, -32680, grid_size_x))
+        # plt.yticks(np.arange(-10155, -10105, grid_size_y))
+        plt.grid(True)  # グリッドの表示
 
 
-    # pltを使ってフィルタリング結果を可視化
-    plt.subplot(1, 2, 2)  # 1行2列のレイアウトで2番目のプロット
-    plt.scatter(filtered_points[:, 0], filtered_points[:, 1], s=1, c='blue', alpha=0.5, label='mwr_points')
-    plt.title('azimuth_amp_coscurve_vote')
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
-    plt.legend()
-    grid_size_x = 0.05
-    grid_size_y = 0.05
-    # plt.xticks(np.arange(-32720, -32680, grid_size_x))
-    # plt.yticks(np.arange(-10155, -10105, grid_size_y))
-    plt.grid(True)  # グリッドの表示
-    #plt.tight_layout()  # レイアウトを自動調整
-    plt.show()
+        # pltを使ってフィルタリング結果を可視化
+        plt.subplot(1, 2, 2)  # 1行2列のレイアウトで2番目のプロット
+        plt.scatter(filtered_points[:, 0], filtered_points[:, 1], s=1, c='blue', alpha=0.5, label='mwr_points')
+        plt.title('extracted cloudpoints')
+        plt.xlabel('X-axis')
+        plt.ylabel('Y-axis')
+        plt.legend()
+        grid_size_x = 0.05
+        grid_size_y = 0.05
+        # plt.xticks(np.arange(-32720, -32680, grid_size_x))
+        # plt.yticks(np.arange(-10155, -10105, grid_size_y))
+        plt.grid(True)  # グリッドの表示
+        #plt.tight_layout()  # レイアウトを自動調整
+        plt.show()
 
     # 新しいCSVファイルを作成、保存
     extracted_mwr_df = pd.DataFrame(filtered_points)
