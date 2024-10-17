@@ -1,3 +1,5 @@
+pythonファイル
+
 EgoMotion.py　　　　　　　mwrデータに対し, amplitudeによる外れ値除去+azimuth角による外れ値除去+coscurvefitting
 EgoMotion_mwr+aqloc.py　　mwr+aqlocデータに対し, amplitudeによる外れ値除去+azimuth角による外れ値除去+coscurvefitting
 gpggato19.py　　　　　　　aqlocデータを19系座標に変換
@@ -21,7 +23,23 @@ write_pose.py             aqlocの時系列位置情報から、yaw角を推定�
 
 
 MWRマップ作製時のファイル実行順
-gpggato19.py → mwrunixtoutc.py → mwrsplitcsv.py → mwrsymbolcsv_finalver.py → groundpoint_removal.py → EgoMotion_mwr+aqloc.py → straightgeneration.py
+gpggato19.py → mwrunixtoutc.py → mwrsplitcsv.py → mwrsymbolcsv_finalver.py → groundpoint_removal.py → EgoMotion_mwr+aqloc.py → visualization.py
 
 LiDARによる喜久井町のリファレンス点群は以下に保存
 https://waseda.box.com/s/lwp6gdfnd995rsbfmewvq9tace1quj37
+
+フォルダ
+
+aqloc                                    aqlocデータが入ってる
+image0907　　　　　　　　　　　　　　　　mmsprobeでとった画像データが入ってる。モーションステレオで使おうとした
+image0909　　　　　　　　　　　　　　　　同上
+imagepoint　　　　　　　　　　　　　　　モーションステレオで構築した点群や画像間の対応点を投影したものや, 対応点の変化をベクトルで表現したものを投影した画像
+MMSProbe　　　　　　　　　　　　　　　　モーションステレオで使用したMMSProbe.
+motionstereo_result                     どうでもいい
+mwr　　　　　　　　　　　　　　　　　　　mwrデータ
+mwr+aqloc　　　　　　　　　　　　　　　　mwrとaqlocデータを複合したやつ。
+other_data　　　　　　　　　　　　　　　たぶんmmsprobeでとった単独測位結果。結構どうでもいい
+Structure-From=Motion-SFM--master　　　　一般人がつくったモーションステレオ用オープンソース
+temp_using　　　　　　　　　　　　　　　自己位置推定時の8秒ごと地面点群除去処理の性能とミリ波ベクター作成性能を確認しようとしたときに使った
+wall　　　　　　　　　　　　　　　　　　壁を近似した直線
+

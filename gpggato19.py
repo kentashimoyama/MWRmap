@@ -8,8 +8,8 @@ import numpy as np
 wgs84_to_jgd2011 = Transformer.from_crs('EPSG:4326', 'EPSG:6668')
 
 # EPSG:4326 to EPSG:6677
-#epsg4326_to_epsg6677 = Transformer.from_crs("epsg:4326", "epsg:6674")
-epsg4326_to_epsg6677 = Transformer.from_crs("epsg:4326", "epsg:6677")
+epsg4326_to_epsg6677 = Transformer.from_crs("epsg:4326", "epsg:6674")
+# epsg4326_to_epsg6677 = Transformer.from_crs("epsg:4326", "epsg:6677")
 # 6系三重県vison:epsg:6674, 9系東京都早稲田大学大学喜久井町キャンパス, 神奈川県三菱電機鎌倉製作所KTF:epsg:6677
 
 # GPGGA latitude, longitude data --> 19 latitude, longitude
@@ -18,8 +18,9 @@ def convert_gpgga_to_jgd2011(latitude, longitude):
     wgs84_latitude = float(latitude[:2]) + float(latitude[2:]) / 60
     wgs84_longitude = float(longitude[:3]) + float(longitude[3:]) / 60
 
-    jgd2011_longitude, jgd2011_latitude = wgs84_to_jgd2011.transform(wgs84_longitude, wgs84_latitude)
-    latitude19, longitude19 = epsg4326_to_epsg6677.transform(jgd2011_latitude, jgd2011_longitude)
+    # jgd2011_longitude, jgd2011_latitude = wgs84_to_jgd2011.transform(wgs84_longitude, wgs84_latitude)
+    # latitude19, longitude19 = epsg4326_to_epsg6677.transform(jgd2011_latitude, jgd2011_longitude)
+    latitude19, longitude19 = epsg4326_to_epsg6677.transform(wgs84_latitude, wgs84_longitude)
 
     return latitude19, longitude19
 
@@ -111,7 +112,9 @@ file_name = "20240907_3"
 
 
 
-file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\aqloc/"+file_name
+# file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\aqloc/"+file_name
+
+file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\MMSProbe_2024\data\20240123_VISON\AQLOC/012503"
 
 # open file
 #with codecs.open('C:/workspace/MELCO/data/20240123_VISON/AQLOC/012504.csv', 'r', encoding='utf-8-sig') as csvfile:
