@@ -45,7 +45,7 @@ for iwrdirname, aqlocfilename, finalfilename, right in zip(iwrdirname_list, aqlo
 
     #IWR_DIR = r"C:\workspace\MELCO\data\20240123_VISON\MWR\240125_144504261_vison012503r\csv80"
     #AQLOC_FILE = r"C:\workspace/MELCO\data\20240123_VISON\AQLOC/012503_19.csv"
-    
+
     IWR_DIR = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr/"+iwrdirname
     AQLOC_FILE = r'C:\Users\kenta shimoyama\Documents\amanolab\melco\MMSProbe_2024\data\20240123_VISON\AQLOC/'+aqlocfilename
 
@@ -153,7 +153,8 @@ for iwrdirname, aqlocfilename, finalfilename, right in zip(iwrdirname_list, aqlo
 
 
                         #iwrx = px - qx * cos_theta + qy * sin_theta
-                        #iwry = py + qx * sin_theta + qy * cos_theta
+                        #iwry = py 
+                        # + qx * sin_theta + qy * cos_theta
 
                         amplitude = float(row[5])
                         timestanp = float(row[2])

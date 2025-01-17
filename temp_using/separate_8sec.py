@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 
 debug = False
 
+
+
+
 def filter_ground_and_vegetation(points, voxel_size=0.05, threshold=5):
     # グリッドのサイズを設定
     grid_size = voxel_size
@@ -15,6 +18,9 @@ def filter_ground_and_vegetation(points, voxel_size=0.05, threshold=5):
     # 点群の最小値と最大値を求める
     min_x, min_y, _, _, _, _, _ = np.min(points, axis=0)
     max_x, max_y, _, _, _, _, _ = np.max(points, axis=0)
+
+    min_x, min_y = np.min(points, axis=0)
+    max_x, max_y = np.max(points, axis=0)
 
     # グリッドの範囲を計算
     grid_min_x = min_x
@@ -36,13 +42,14 @@ def filter_ground_and_vegetation(points, voxel_size=0.05, threshold=5):
     for num, point in enumerate(points):
         print(f"generating grid ...  {num+1}/{points.shape[0]}")
         x, y, amp, t, xrange, yrange, velocity = point
+        x, y = point
         grid_x = int((x - grid_min_x) // grid_size) #x方向grid index. 1つめのgridのインデックスは0．
         grid_y = int((y - grid_min_y) // grid_size) #y方向grid index. 1つめのgridのインデックスは0．
         if 0 <= grid_x < grid_num_x and 0 <= grid_y < grid_num_y:
             grid_count[grid_x, grid_y] += 1 #gridを表す配列に各gridの点の個数を保存．
             # points_ingrid[grid_x, grid_y].append([x, y]) #x, y座標を保存. 2次元配列の1要素が1グリッドにあたる． [[ [[x,y], [x,y]] ], [ [] ], [ [[x,y]] ]]
-            points_ingrid[grid_x, grid_y].append([x, y, amp, t, xrange, yrange, velocity]) #x, y座標を保存. 2次元配列の1要素が1グリッドにあたる． [[ [[x,y,amp,t], [x,y,amp,t]] ], [ [] ], [ [[x,y,amp,t]] ]]
-
+            # points_ingrid[grid_x, grid_y].append([x, y, amp, t, xrange, yrange, velocity]) #x, y座標を保存. 2次元配列の1要素が1グリッドにあたる． [[ [[x,y,amp,t], [x,y,amp,t]] ], [ [] ], [ [[x,y,amp,t]] ]]
+            points_ingrid[grid_x, grid_y].append([x, y]) #x, y座標を保存. 2次元配列の1要素が1グリッドにあたる． [[ [[x,y,amp,t], [x,y,amp,t]] ], [ [] ], [ [[x,y,amp,t]] ]]
 
     indices = np.where(grid_count >= threshold) #閾値より大きい??　小さい??  gridのindexのみ抽出．出力：[[行index1, 行index2, ...], [列index1, 列index2, ...]]
     #print(points_ingrid.shape)
@@ -55,13 +62,19 @@ def filter_ground_and_vegetation(points, voxel_size=0.05, threshold=5):
         for filtered_p_list in filtered_points_list[i]:
             filtered_ps_list.append(filtered_p_list)
     filtered_points = np.array(filtered_ps_list)
-    filtered_points = filtered_points[filtered_points[:, 3].argsort()] #unixtimeの列を基準にソート
+    # filtered_points = filtered_points[filtered_points[:, 3].argsort()] #unixtimeの列を基準にソート
 
     # 直線を描画 open3dを使用。
     #line_set = grid_line(grid_min_x, grid_min_y ,grid_max_x, grid_max_y, grid_num_x, grid_num_y, grid_size)
 
     return filtered_points
 
+
+20241210_1733821413_adv_people
+fp = filter_ground_and_vegetation(points, voxel_size=0.36, threshold=5)
+
+
+exit()
 def amp_azimath_th(df, th):
     index_list = []
     df.columns = ["X_cor", "Y_cor", "Amplitude", "UnixTime", "Xrange", "Yrange", "Velocity[m/s]"]
@@ -84,6 +97,34 @@ def amp_azimath_th(df, th):
     inlier_ampazi_df = inlier_amp_df.iloc[index_list]
 
     return inlier_ampazi_df
+
+def azimath_th(file):
+    index_list = []
+    df = pd.read_csv(file) 
+    df.columns = ["X_cor", "Y_cor", "Amplitude", "UnixTime", "Xrange", "Yrange", "Velocity[m/s]"]
+    x = df['Xrange'].to_numpy()
+    y = df['Yrange'].replace(0, 1e-9).to_numpy()
+    angle = np.degrees(np.arctan(x / y))
+    for i, j in enumerate(angle):
+        print(i)
+        if abs(j) < 30:
+            index_list.append(i)
+    inlier_df = df.iloc[index_list]
+    
+    return inlier_df
+
+def amp_th(df, th):
+    index_list = []
+    df.columns = ["X_cor", "Y_cor", "Amplitude", "UnixTime", "Xrange", "Yrange", "Velocity[m/s]"]
+    amp = df["Amplitude"]
+    amp_list = list(amp)
+    for i ,j in enumerate(amp_list):
+        print(i)
+        if j <= th:
+            index_list.append(i)
+    inlier_df = df.iloc[index_list]
+
+    return inlier_df
 
 def sep_8sec(input_file):
     data = pd.read_csv(input_file)
@@ -121,8 +162,43 @@ def sep_8sec(input_file):
     
     return split_data
 
+
+
+# # CSVファイルを読み込む
+# input_file_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc/symbols_vison_left_extracted_15_80azi.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc/symbols_vison_right_extracted_15_80azi.csv"]
+# for input_file in input_file_list:
+#     split_data = sep_8sec(input_file)
+#     filtered_points_all = []
+    
+#     for i, data in enumerate(split_data):
+#         print(f"processing {i}/{len(split_data)} ...")
+#         # 0列目と1列目のデータを抽出する
+#         df = pd.DataFrame(data)
+#         extracted_columns = df.iloc[:, [0, 1]] #dataframe型 x, y
+
+#         # 抽出したデータを表示
+#         #print(extracted_columns)
+#         # world_pos = np.array(extracted_columns) #[[x, y], [x, y], [x, y]...]
+#         world_pos = np.array(df)  #[[x, y, amp, t, Xrange, Yrange, Velocity[m/s]], [x, y, amp, t, , Xrange, Yrange, Velocity[m/s]], [x, y, amp, t, , Xrange, Yrange, Velocity[m/s]]...]
+
+#         # print(world_pos)
+
+#         #　保存
+#         world_pos_df = pd.DataFrame(world_pos)
+#         # filtered_points_df.to_csv(r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filter\" + input_file.split("/")[1].split(".")[0] + "/points_frame" + str(i+1) + ".csv", mode='w', header=False, index=False)
+#         world_pos_df.to_csv(
+#         r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filter\\" + input_file.split("/")[1].split(".")[0] + "\\points_frame" + str(i + 1) + ".csv", 
+#         mode='w', 
+#         header=False, 
+#         index=False
+#         )
+
+# exit()
+
 # CSVファイルを読み込む
-input_file_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc/symbols_vison_right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc/symbols_vison_left.csv"]
+ampazi = False
+amp = True
+input_file_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc/symbols_vison_left_extracted_15_80azi.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc/symbols_vison_right_extracted_15_80azi.csv"]
 for input_file in input_file_list:
     split_data = sep_8sec(input_file)
     filtered_points_all = []
@@ -147,60 +223,75 @@ for input_file in input_file_list:
         #o3d.visualization.draw_geometries([pcd])
 
         # 点群のフィルタリング
-        th = 2
-        filtered_points = filter_ground_and_vegetation(world_pos, voxel_size=0.05, threshold=th) #gridあたり何点以上 大体閾値は2
+        th = 5
+        voxel_size = 0.36
+        filtered_points = filter_ground_and_vegetation(world_pos, voxel_size=voxel_size, threshold=th) #gridあたり何点以上 大体閾値は2
         
         # フィルタリング結果を表示
         print(f"extracted points: {filtered_points.shape[0]}")
 
         #　保存
         filtered_points_df = pd.DataFrame(filtered_points)
-        # filtered_points_df.to_csv(r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filter\" + input_file.split("/")[1].split(".")[0] + "/points_frame" + str(i+1) + ".csv", mode='w', header=False, index=False)
-        filtered_points_df.to_csv(
-        r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filter\\" + 
-        input_file.split("/")[1].split(".")[0] + 
-        "\\points_frame" + str(i + 1) + ".csv", 
-        mode='w', 
-        header=False, 
-        index=False
-        )
+        # # filtered_points_df.to_csv(r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filter\" + input_file.split("/")[1].split(".")[0] + "/points_frame" + str(i+1) + ".csv", mode='w', header=False, index=False)
+        # filtered_points_df.to_csv(
+        # r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filter\\" + 
+        # input_file.split("/")[1].split(".")[0] + 
+        # "\\points_frame" + str(i + 1) + ".csv", 
+        # mode='w', 
+        # header=False, 
+        # index=False
+        # )
         # 縦に連結
         if i == 0:
             filtered_points_all = filtered_points
         else:
             filtered_points_all = np.vstack((filtered_points_all, filtered_points))
 
-        # amp aziによるフィルタリング
-        ampth = 65
-        ampazifiltered_points_df = amp_azimath_th(pd.DataFrame(filtered_points), ampth)
+        # azimuthのみによるフィルタリング
+        if amp:
+            ampth = 65
+            ampfiltered_points_df = amp_th(pd.DataFrame(filtered_points), ampth)
+            ampfiltered_points_df.to_csv(
+            r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filter\\" + 
+            input_file.split("/")[1].split(".")[0] + str(ampth) + "amp"
+            "\\points_frame" + str(i + 1) + ".csv", 
+            mode='w', 
+            header=False, 
+            index=False
+            )
 
-        # 保存
-        # ampazifiltered_points_df.to_csv(r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filterampazi\" + input_file.split("/")[1].split(".")[0] + "/points_frame" + str(i+1) + ".csv", mode='w', header=False, index=False)
-        ampazifiltered_points_df.to_csv(
-        r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filterampazi\\" + 
-        input_file.split("/")[1].split(".")[0] + 
-        "\\points_frame" + str(i + 1) + ".csv", 
-        mode='w', 
-        header=False, 
-        index=False
-        )
+        # amp, aziによるフィルタリング
+        if ampazi:
+            ampth = 80
+            ampazifiltered_points_df = amp_azimath_th(pd.DataFrame(filtered_points), ampth)
 
-        ampazifiltered_points_array = ampazifiltered_points_df.iloc[:, :].to_numpy()
+            # 保存
+            # ampazifiltered_points_df.to_csv(r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filterampazi\" + input_file.split("/")[1].split(".")[0] + "/points_frame" + str(i+1) + ".csv", mode='w', header=False, index=False)
+            ampazifiltered_points_df.to_csv(
+            r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\frame_mwr+aqloc\filterampazi\\" + 
+            input_file.split("/")[1].split(".")[0] + 
+            "\\points_frame" + str(i + 1) + ".csv", 
+            mode='w', 
+            header=False, 
+            index=False
+            )
 
-        # 縦に連結
-        if i == 0:
-            ampazifiltered_points_array_all = ampazifiltered_points_array
-        else:
-            ampazifiltered_points_array_all = np.vstack((ampazifiltered_points_array_all, ampazifiltered_points_array))
+            ampazifiltered_points_array = ampazifiltered_points_df.iloc[:, :].to_numpy()
 
-    # print(filtered_points_all)
-    extracted_mwr_df = pd.DataFrame(filtered_points_all)
-    extracted_mwr_df.to_csv(input_file.split(".")[0]+"_extracted_"+str(th)+".csv"  , index=False, header=False)
+            # 縦に連結
+            if i == 0:
+                ampazifiltered_points_array_all = ampazifiltered_points_array
+            else:
+                ampazifiltered_points_array_all = np.vstack((ampazifiltered_points_array_all, ampazifiltered_points_array))
 
-    ampth = 80
-    ampazifiltered_points_array_all_df = pd.DataFrame(ampazifiltered_points_array_all)
-    inlier_ampazi_df = amp_azimath_th(ampazifiltered_points_array_all_df, ampth)
-    inlier_ampazi_df.to_csv(input_file.split(".")[0]+"_extracted_"+str(th)+"_"+str(ampth)+"azi_inlier.csv", mode='w', header=True, index=False)
+    # # print(filtered_points_all)
+    # extracted_mwr_df = pd.DataFrame(filtered_points_all)
+    # extracted_mwr_df.to_csv(input_file.split(".")[0]+"_extracted_"+str(th)+".csv"  , index=False, header=False)
+
+    # ampth = 80
+    # ampazifiltered_points_array_all_df = pd.DataFrame(ampazifiltered_points_array_all)
+    # inlier_ampazi_df = amp_azimath_th(ampazifiltered_points_array_all_df, ampth)
+    # inlier_ampazi_df.to_csv(input_file.split(".")[0]+"_extracted_"+str(th)+"_"+str(ampth)+"azi_inlier.csv", mode='w', header=True, index=False)
 
         
 
