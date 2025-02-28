@@ -15,12 +15,13 @@ class Mwrunix2utc():
             return unix_time  # 'UNIXTIME' の場合はそのまま返す
 
         # utc_time = datetime.datetime.utcfromtimestamp(float(unix_time))
-        utc_time = datetime.datetime.fromtimestamp(float(unix_time), datetime.UTC)
+        # utc_time = datetime.datetime.fromtimestamp(float(unix_time), datetime.UTC)
+        utc_time = datetime.datetime.fromtimestamp(float(unix_time), tz=datetime.timezone.utc)
         # utc_time += datetime.timedelta(hours=9)  # UTC時間から9時間足す
         return utc_time.strftime("%H%M%S.%f")
 
     def main(self, file_name, whitelane_time):
-        input_file = self.home_dir+"\mwr/"+file_name
+        input_file = self.home_dir+"/mwr/"+file_name
         # input_file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr/"+file_name
         output_file = input_file+"_utc.csv"
 

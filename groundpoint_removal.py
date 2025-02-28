@@ -73,9 +73,9 @@ class GroundPointRemoval():
         return filtered_points
 
     def main(self, dirname, visualize):
-        csv_dir_path = self.home_dir + "\\frame_mwr+aqloc\\" + dirname
+        csv_dir_path = self.home_dir + "/frame_mwr+aqloc/" + dirname
         filename_list = os.listdir(csv_dir_path)
-        output_directory = self.home_dir + "\groundpoint_filtered/" + dirname + "/"
+        output_directory = self.home_dir + "/groundpoint_filtered/" + dirname + "/"
         if os.path.exists(output_directory) and os.path.isdir(output_directory):
             shutil.rmtree(output_directory)  # ディレクトリを削除
             print(f"{output_directory} は削除されました。")
@@ -83,7 +83,7 @@ class GroundPointRemoval():
             print(f"{output_directory} は存在しません。")
         
         for filename in filename_list:
-            csv_file_path = csv_dir_path + "\\" + filename
+            csv_file_path = csv_dir_path + "/" + filename
             df = pd.read_csv(csv_file_path, header=None)  # header=None はヘッダーがない場合に使用します
 
             # 0列目と1列目のデータを抽出する
@@ -291,17 +291,17 @@ def grid_line(self, grid_min_x, grid_min_y ,grid_max_x, grid_max_y, grid_num_x, 
 if __name__ == "__main__":
     gp = GroundPointRemoval()
     # CSVファイルのパス
-    #csv_file_path = r'C:\Users\shimo\PycharmProjects\symbols.csv'
-    #csv_file_path = r"C:\Users\shimo\PycharmProjects\MELCO引継ぎ用\簡易地図生成\mwr+aqloc\symbols.csv"
-    # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_0717_tennis_1_left_80azi_cosinlier.csv"
-    # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_0717_tennis_1_left.csv"
-    # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_tennis.csv"
-    # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_0627_6_mwr1_80azi_cosinlier.csv"
-    # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_0717_agawall_1_left_80azi_cosinlier.csv"
-    # csv_file_path = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr+aqloc\symbols_0717_tennis_1_withoutlier_right.csv"
-    # csv_file_path_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3right.csv"]
-    # csv_file_path_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_1right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_2right.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\symbols_0907_3right.csv"]
-    # csv_file_path_list = [r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc\symbols_vison_left.csv", r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc\symbols_vison_right.csv"]
+    #csv_file_path = r'C:/Users/shimo/PycharmProjects/symbols.csv'
+    #csv_file_path = r"C:/Users/shimo/PycharmProjects/MELCO引継ぎ用/簡易地図生成/mwr+aqloc/symbols.csv"
+    # csv_file_path = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/簡易地図生成/mwr+aqloc/symbols_0717_tennis_1_left_80azi_cosinlier.csv"
+    # csv_file_path = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/簡易地図生成/mwr+aqloc/symbols_0717_tennis_1_left.csv"
+    # csv_file_path = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/簡易地図生成/mwr+aqloc/symbols_tennis.csv"
+    # csv_file_path = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/簡易地図生成/mwr+aqloc/symbols_0627_6_mwr1_80azi_cosinlier.csv"
+    # csv_file_path = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/簡易地図生成/mwr+aqloc/symbols_0717_agawall_1_left_80azi_cosinlier.csv"
+    # csv_file_path = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/簡易地図生成/mwr+aqloc/symbols_0717_tennis_1_withoutlier_right.csv"
+    # csv_file_path_list = [r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_1left.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_1right.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_2left.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_2right.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_3left.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_3right.csv"]
+    # csv_file_path_list = [r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_1left.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_2left.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_3left.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_1right.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_2right.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/symbols_0907_3right.csv"]
+    # csv_file_path_list = [r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/temp_using/mwr+aqloc/symbols_vison_left.csv", r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/temp_using/mwr+aqloc/symbols_vison_right.csv"]
     csv_dirname_list = ["symbols_0907_1left", "symbols_0907_2left", "symbols_0907_3left", "symbols_0907_1right", "symbols_0907_2right", "symbols_0907_3right"]
 
     visualize = False

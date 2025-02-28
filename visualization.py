@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib
+matplotlib.use('TkAgg')  # Tkinterを使用する場合
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
@@ -198,6 +200,9 @@ class Gen_map():
         #print(subset_data)
         model, inliers = self.ransac(subset_data, iterations=iterations, threshold=threshold)
         inliers = np.array(inliers)
+        # print(f"inliers{inliers}")
+        if len(list(inliers)) == 0:
+            return (None, None, None, None)
         x_min = sorted(inliers[:, 0])[0]
         x_max = sorted(inliers[:, 0])[-1]
         k = model[0]
@@ -212,18 +217,22 @@ class Gen_map():
     
     def main(self, mwr_all_filename, mwr_dirname, aqloc_filename):
         #MWR   
-        csv_file_path = self.home_dir + "\mwr+aqloc/" + mwr_all_filename
-        data = pd.read_csv(csv_file_path, header=None)
+        csv_file_path = self.home_dir + "/mwr+aqloc/" + mwr_all_filename
+        # data = pd.read_csv(csv_file_path, header=None) #mwr生データ
+        
 
         #MWR直線近似用
-        input_dir = self.home_dir + "\\amp_azimuth_filtered\\" + mwr_dirname
-
+        input_dir = self.home_dir + "/amp_azimuth_filtered/" + mwr_dirname
+        # input_dir = self.home_dir + "/amp_azimuth_filtered/" + mwr_dirname + "/rightwall/"
+        # input_dir = self.home_dir + "/amp_azimuth_filtered/" + mwr_dirname+"_over65"
+        # input_dir = self.home_dir + "/groundpoint_filtered/" + mwr_dirname + "/rightwall/"
+        # input_dir = self.home_dir + "/groundpoint_filtered/" + mwr_dirname
         #AQLOC
-        csv_file_path2 = self.home_dir + "\\aqloc\\" + aqloc_filename
+        csv_file_path2 = self.home_dir + "/aqloc/" + aqloc_filename
         # data2 = pd.read_csv(csv_file_path2, header=None)
         data2 = pd.read_csv(csv_file_path2, skiprows=2)
 
-        output_directory = self.home_dir + "\wall/" + mwr_dirname + "/"
+        output_directory = self.home_dir + "/wall/" + mwr_dirname + "/"
         if os.path.exists(output_directory) and os.path.isdir(output_directory):
             shutil.rmtree(output_directory)  # ディレクトリを削除
             print(f"{output_directory} は削除されました。")
@@ -231,11 +240,15 @@ class Gen_map():
             print(f"{output_directory} は存在しません。")
 
         filename_list = os.listdir(input_dir)
+        
         filename_list = sorted(filename_list, key=lambda x: int(x.split('_')[1][5:]), reverse=False)
-        for filename in filename_list:
+        for i, filename in enumerate(filename_list):
             print(f"processing ... filename : {filename}")
-            input_file = input_dir + "\\" + filename
-
+            input_file = input_dir + "/" + filename
+            try:
+                data = pd.read_csv(input_file, header=None) # 投票処理、ampazimuth処理済みMwrデータ
+            except Exception as e:
+                continue
             # x, yのデータを取得
             # x = data.iloc[:, 1]  # 2列目をxに対応
             # y = data.iloc[:, 0]  # 1列目をyに対応
@@ -245,8 +258,8 @@ class Gen_map():
             x2 = data2.iloc[:, 2]  # 1列目をxに対応
             y2 = data2.iloc[:, 1]  # 0列目をyに対応
 
-            # plt.scatter(x, y, color='black', s=0.4, label='MWR symbols')
-            plt.scatter(x2, y2, color='yellow', s=3, label='Trajectory')
+            plt.scatter(x, y, color='black', s=0.4, label='MWR symbols') #outlier除去済み点群
+            # plt.scatter(x2, y2, color='yellow', s=3, label='Trajectory') #aqloc軌跡
 
 
             # ransacによる直線近似
@@ -261,7 +274,7 @@ class Gen_map():
             if x_line is None:
                 continue
 
-            plt.plot(x_line, y_line, color='red', lw=5, label='mw vector')
+            plt.plot(x_line, y_line, color='red', lw=5, label='mwr vector')
             with open(output_file, 'w', newline='') as file:
                 for i, j in enumerate(x_line):
                     writer = csv.writer(file)
@@ -273,75 +286,117 @@ class Gen_map():
             #         writer = csv.writer(file)
             #         writer.writerow([x_inliers[i], y_inliers[i]]) #x座標, y座標
 
-
-            #original reference???
+            ###
+            # # 喜久井町wall
+            # #original reference???
             # y_values = [-32699.33842, -32700.51942, -32705.22142, -32709.91742, -32714.44242, -32720.66442]
             # x_values = [-10122.86071, -10127.40971, -10131.25671, -10134.90071, -10138.63971, -10143.85871]
             # x_values2 = [-10126.0074, -10116.8466]
             # y_values2 = [-32739.1864, -32719.9844]
 
-            #control building wall reference
+            # #control building wall reference
             # x_values2 = [-10126.0361, -10116.8753]
             # y_values2 = [-32737.5364, -32718.3344]
+            # #tennis court pole reference 喜久井町のみ
+            # x_values = [-10122.88941, -10127.43841, -10131.28541, -10134.92941, -10138.66841, -10143.88741]
+            # y_values = [-32697.68842, -32698.86942, -32703.57142, -32708.26742, -32712.79242, -32719.01442]
+            # plt.plot(x_values, y_values, color='blue', lw=4,  label='reference')
+            # plt.plot(x_values2, y_values2, color='blue', lw=4)
 
+            # #tennis court pole generated straitline map 喜久井町のみ
+            # # x_line2 = np.linspace(-10145.12348, -10124.86966, 100) #100分割
+            # # y_line2 = 1.240033538 * x_line2 - 20140.42631 #線形方程式に100分割したx座標を代入
+            # # plt.plot(x_line2, y_line2, color='orange', lw=3)
 
+            # #control building wall
+            # # x_line = np.linspace(-10124.88774, -10115.96426, 100)
+            # # y_line = 1.70431953608241 * x_line - 15477.4698422945
+            # # plt.plot(x_line, y_line, color='orange', lw=3, label='approximate straight line')
+            ###
 
-
-
-            #tennis court pole reference 喜久井町のみ
-            x_values = [-10122.88941, -10127.43841, -10131.28541, -10134.92941, -10138.66841, -10143.88741]
-            y_values = [-32697.68842, -32698.86942, -32703.57142, -32708.26742, -32712.79242, -32719.01442]
-            plt.plot(x_values, y_values, color='red', lw=4,  label='reference')
-            #plt.plot(x_values2, y_values2, color='red', lw=4)
-
-            #tennis court pole generated straitline map 喜久井町のみ
-            # x_line2 = np.linspace(-10145.12348, -10124.86966, 100) #100分割
-            # y_line2 = 1.240033538 * x_line2 - 20140.42631 #線形方程式に100分割したx座標を代入
-            # plt.plot(x_line2, y_line2, color='orange', lw=3)
-
-            #control building wall
-            x_line = np.linspace(-10124.88774, -10115.96426, 100)
-            y_line = 1.70431953608241 * x_line - 15477.4698422945
-            plt.plot(x_line, y_line, color='orange', lw=3, label='approximate straight line')
-
-
-            #vison wall
-            # # (-69.226921, -48.704475)
-            # # (-75.661316, -50.394905)
-            # # x0_line = [-69.226921+47493.974, -75.661316+47493.974]
-            # # y0_line = [-48.704475-170555.256, -50.394905-170555.256]
-            # # plt.scatter(x0_line, y0_line, color='black', s=50)
+            ###
+            # vison wall
+            # (-69.226921, -48.704475)
+            # (-75.661316, -50.394905) 
+            # x0_line = [-69.226921+47493.974, -75.661316+47493.974]
+            # y0_line = [-48.704475-170555.256, -50.394905-170555.256]
+            # plt.scatter(x0_line, y0_line, color='black', s=50)
 
             # x1_line = np.linspace(47415.86818, 47454.66952, 100)
             # y1_line = 0.30503694146117 * x1_line - 185063.980842072
-            # # plt.plot(x1_line, y1_line, color='blue', lw=3, label='approximate straight line')
+            # plt.plot(x1_line, y1_line, color='blue', lw=3, label='approximate straight line')
 
-            # x2_line = np.linspace(47403.66981, 47416.60928, 100) #右側mwr一つ目
+    
+
+            # # 2点の座標を指定　#右側mwr1つ目やり直し
+            # point1 = np.array([-44.197231, -85.592026, 0])  # 例: (1, 2)
+            # point2 = np.array([-57.379601, -82.174675, 0]) # 例: (4, 5)
+
+            # point1 = rot(point1)
+            # point2 = rot(point2)
+            
+            # # x座標とy座標をリストにする
+            # x_values2 = [point1[0]+47493.9740 , point2[0]+47493.9740]
+            # y_values2 = [point1[1]-170555.2560, point2[1]-170555.2560]
+            # # 結果の表示
+            # print("回転後の座標:", x_values2, y_values2)
+            # # 直線を描画
+            # plt.plot(x_values2, y_values2, color='blue', lw=3)  # marker='o'で点を表示
+            
+
+            # # 2点の座標を指定　#左側mwr1つ目やり直し
+            # point1 = np.array([-48.276077, -67.544655,0])  # 例: (1, 2)
+            # point2 = np.array([-50.407867, -75.658287,0]) # 例: (4, 5)
+
+            # point1 = rot(point1)
+            # point2 = rot(point2)
+
+            # # x座標とy座標をリストにする
+            # x_values4 = [point1[0]+47493.9740, point2[0]+47493.9740]
+            # y_values4 = [point1[1]-170555.2560, point2[1]-170555.2560]
+            # # 直線を描画
+            # plt.plot(x_values4, y_values4, color='blue', lw=3)  # marker='o'で点を表示
+
+
+            # # 2点の座標を指定　#左側mwr2つ目やり直し
+            # point1 = np.array([-51.107895, -78.217346,0]) # 例: (1, 2)
+            # point2 = np.array([-70.494926, -73.220322,0]) # 例: (4, 5)
+
+            # point1 = rot(point1)
+            # point2 = rot(point2)
+
+            # # x座標とy座標をリストにする
+            # x_values5 = [point1[0]+47493.9740, point2[0]+47493.9740]
+            # y_values5 = [point1[1]-170555.2560, point2[1]-170555.2560]
+            # # 直線を描画
+            # plt.plot(x_values5, y_values5, color='blue', lw=3)  # marker='o'で点を表示
+
+            # x2_line = np.linspace(47403.66981, 47416.60928, 100) #右側mwr1間違いリファレンス
             # y2_line = -2.77363066721389 * x2_line - 39108.254781585
             # plt.plot(x2_line, y2_line, color='blue', lw=3, label='wall')
 
-            # x3_line = np.linspace(47375, 47402.64904, 100)#47395.16571
-            # y3_line = 0.335158633618352 * x3_line -186516.835124765
-            # plt.plot(x3_line, y3_line, color='blue', lw=3)
+            # x2_line = np.linspace(47408.381974, 47411.799325, 100) 
+            x2_line = np.linspace(47408.381974, 47415.299325, 100) #右側mwr1
+            y2_line = -3.8574820087255 * x2_line +12277.5273
+            plt.plot(x2_line, y2_line, color='blue', lw=3, label='wall')
 
-            # x4_line = np.linspace(47413.80116, 47420.3257, 100) #左側mwr
-            # y4_line = -3.65065533563694 * x4_line + 2492.29579128973
-            # plt.plot(x4_line, y4_line, color='blue', lw=3)
+            x3_line = np.linspace(47375, 47402.64904, 100)#47395.16571 #右側mwr2
+            y3_line = 0.335158633618352 * x3_line -186516.835124765
+            plt.plot(x3_line, y3_line, color='blue', lw=3)
 
-            # x5_line = np.linspace(47415.94283, 47426.58557, 100) #左側mwr
-            # y5_line = 0.281261979677639 * x5_line -183943.124271905
-            # plt.plot(x5_line, y5_line, color='blue', lw=3)
+            x4_line = np.linspace(47413.80116, 47420.3257, 100) #左側mwr1
+            y4_line = -3.65065533563694 * x4_line + 2492.29579128973
+            plt.plot(x4_line, y4_line, color='blue', lw=3)
+
+            x5_line = np.linspace(47415.94283, 47426.58557, 100) #左側mwr2
+            y5_line = 0.281261979677639 * x5_line -183943.124271905
+            plt.plot(x5_line, y5_line, color='blue', lw=3)
+            ###
 
             #全フレームの近似直線を統合した直線地図を描画
             # input_file = r'C:\Users\shimo\PycharmProjects\MELCO引継ぎ用\簡易地図生成\wall\kabe.csv' #壁付近のデータのみ収集
             # x_line, y_line = gen_straight_map(input_file)
             # plt.plot(x_line, y_line, color='black', lw=3)
-
-
-
-
-
-
 
             #plt.title('approximate straight line')
             # plt.xlim(-10155, -10120)  # x軸の範囲を0から5に設定
@@ -356,10 +411,27 @@ class Gen_map():
             plt.ylabel('Y  m')
             plt.legend()
 
-            # plt.axis('equal')
-            plt.show()
-            
-        
+        # plt.axis('equal')
+        # plt.savefig(output_directory + 'straightmap'+str(i)+'.jpg')  # ファイルに保存
+        # plt.show()
+        # print(f"グラフ{i}をファイルに保存しました。")
+    
+def rot(point):
+    # z軸周りに90度回転
+    theta_z = np.radians(-90)  # 180度をラジアンに変換
+    rotation_matrix_z = np.array([[np.cos(theta_z), -np.sin(theta_z), 0],
+                                [np.sin(theta_z), np.cos(theta_z), 0],
+                                [0, 0, 1]])
+    point_rotated_z = rotation_matrix_z @ point
+
+    # x軸周りに90度回転
+    theta_x = np.radians(180)  # 90度をラジアンに変換
+    rotation_matrix_x = np.array([[1, 0, 0],
+                                [0, np.cos(theta_x), -np.sin(theta_x)],
+                                [0, np.sin(theta_x), np.cos(theta_x)]])
+    point_rotated_x = rotation_matrix_x @ point_rotated_z
+
+    return point_rotated_x
 
 # #時間で分割
 # def exe_ransac_timeseg(input_file, ts):
@@ -470,11 +542,25 @@ if __name__ == "__main__":
                 
     # exit()
     gm = Gen_map()
-    mwr_all_filename_list = ["symbols_0125_3rightwall1.csv", "symbols_0125_3leftwall1.csv"]
-    mwr_filename_list = ["symbols_0125_3rightwall1", "symbols_0125_3leftwall1"]
-    aqloc_filename_list = ["012503_latlon19.csv", "012503_latlon19.csv"]
+    # mwr_all_filename_list = ["symbols_0120_1rightwall1.csv", "symbols_0120_1leftwall1.csv"]
+    # mwr_filename_list = ["symbols_0120_1rightwall1", "symbols_0120_1leftwall1"]
+    # aqloc_filename_list = ["20250120_1_map_latlon19.csv", "20250120_1_map_latlon19.csv"]
+
+    ###vison
+    mwr_all_filename_list = ["symbols_0120_3rightwall1.csv", "symbols_0120_3leftwall1.csv","symbols_0120_3rightwall2.csv"]
+    mwr_filename_list = ["symbols_0120_3rightwall1", "symbols_0120_3leftwall1","symbols_0120_3rightwall2"]
+    aqloc_filename_list = ["20250120_3_map_latlon19.csv", "20250120_3_map_latlon19.csv",  "20250120_3_map_latlon19.csv"]
+    
+    ###喜久井町
+    # mwr_all_filename_list = ["symbols_1231_2rightwall0.csv", "symbols_1231_2leftwall0.csv"]
+    # mwr_filename_list = ["symbols_1231_2rightwall0", "symbols_1231_2leftwall0"]
+    # aqloc_filename_list = ["20241231_2_map_latlon19_nearbyrightwall.csv", "20241231_2_map_latlon19_nearbyleftwall.csv"]
+    
     for idx, mwr_filename in enumerate(mwr_filename_list):
         gm.main(mwr_all_filename_list[idx], mwr_filename, aqloc_filename_list[idx])
+    
+    plt.axis('equal')
+    plt.show()
 
     # #MWR
     # #csv_file_path = 'C:\workspace\MELCO\data/20240123_VISON\MWR/240125_142932747_vison012501r/symbols80.csv'  # ファイルパスを適切なものに置き換えてください

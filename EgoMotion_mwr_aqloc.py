@@ -64,7 +64,7 @@ class MwrProcessing():
         plt.xlabel("Amplitude dB")
         plt.ylabel("Frequency")
         plt.xlim(left=40, right=130)
-        plt.savefig(r"C:\Users\kenta shimoyama\Documents\amanolab\melco\簡易地図生成\mwr\hist.png")
+        plt.savefig(r"C:/Users/kenta shimoyama/Documents/amanolab/melco/簡易地図生成/mwr/hist.png")
         plt.close()
 
     def amp_th(self, file, th):
@@ -107,7 +107,7 @@ class MwrProcessing():
         amp_list = list(amp)
         for i ,j in enumerate(amp_list):
             print(f"processing amp ... {i+1}")
-            if j < th: #<
+            if j > th: #<
                 index_list.append(i)
         inlier_amp_df = df.iloc[index_list]
 
@@ -124,9 +124,9 @@ class MwrProcessing():
         return inlier_ampazi_df
     
     def main(self, dir, is_MELCO, cosfitting):
-        MELCOdir = self.home_dir + "\groundpoint_filtered/" + dir
+        MELCOdir = self.home_dir + "/groundpoint_filtered/" + dir
         filename_list = os.listdir(MELCOdir)
-        output_directory = self.home_dir + "\\amp_azimuth_filtered\\" + dir + "\\"
+        output_directory = self.home_dir + "/amp_azimuth_filtered/" + dir + "/"
         if os.path.exists(output_directory) and os.path.isdir(output_directory):
             shutil.rmtree(output_directory)  # ディレクトリを削除
             print(f"{output_directory} は削除されました。")
@@ -146,20 +146,20 @@ class MwrProcessing():
             # inlier_azi_df = azimath_th(MELCOfile)
             # inlier_azi_df.to_csv(MELCOfile.split(".")[0]+"_aziinlier.csv", mode='w', header=True, index=False)
             
-            ampth = self.amp_th #65
+            ampth = 105 # self.amp_th #65
             # ampth_list = [85, 90, 95, 100, 105, 110, 115, 120]
             # for ampth in ampth_list:
             inlier_ampazi_df = self.amp_azimath_th(MELCOfile, ampth)
             if cosfitting:
                 #MELCO
-                #output_folder = r'E:\workspace\MMSProbe_2022\data\MWR_results\vison/' + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-                output_folder = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\fig/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-                fig_output_folder = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\fit_best/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+                #output_folder = r'E:/workspace/MMSProbe_2022/data/MWR_results/vison/' + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+                output_folder = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/fig/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+                fig_output_folder = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/fit_best/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
                 os.mkdir(output_folder)
                 os.mkdir(fig_output_folder)
                 outcsv_name = MELCOfile.split(".")[0] + "_"+str(ampth)+"azi_cosinlier.csv"
                 #not MELCO
-                folder = r'E:\MELCO\data\vison\IWR1443\1669780881.6607308/*.csv'
+                folder = r'E:/MELCO/data/vison/IWR1443/1669780881.6607308/*.csv'
                 files = glob.glob(folder)
                 files.sort()
                 popts = []
@@ -317,12 +317,12 @@ if __name__ == '__main__':
     mp = MwrProcessing()
     cosfitting = False
     is_MELCO = 1 #MELCO製:1 not MELCO製(TI製?):0
-    # MELCOdir = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\temp_using\mwr+aqloc/"
+    # MELCOdir = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/temp_using/mwr+aqloc/"
     # file_list = ["symbols_0907_1left_extracted_2.csv", "symbols_0907_1right_extracted_2.csv", "symbols_0907_2left_extracted_2.csv", "symbols_0907_2right_extracted_2.csv", "symbols_0907_3left_extracted_2.csv", "symbols_0907_3right_extracted_2.csv"]
     # file_list = ["symbols_0907_1left_extracted_2.csv", "symbols_0907_2left_extracted_2.csv", "symbols_0907_3left_extracted_2.csv", "symbols_0907_1right_extracted_2.csv", "symbols_0907_2right_extracted_2.csv", "symbols_0907_3right_extracted_2.csv"]
     # file_list = ["symbols_vison_left_extracted_15.csv", "symbols_vison_left_extracted_20.csv", "symbols_vison_left_extracted_30.csv", "symbols_vison_left_extracted_35.csv", "symbols_vison_right_extracted_15.csv", "symbols_vison_right_extracted_20.csv", "symbols_vison_right_extracted_30.csv", "symbols_vison_right_extracted_35.csv"]
     dir_list = ["symbols_0907_1left", "symbols_0907_2left", "symbols_0907_3left", "symbols_0907_1right", "symbols_0907_2right", "symbols_0907_3right"]
-
+    dir_list = ["symbols_1231_2rightwall0_over65", "symbols_1231_2leftwall0_over65"]
     for dir in dir_list:
         mp.main(dir, is_MELCO, cosfitting)
 
@@ -344,14 +344,14 @@ if __name__ == '__main__':
         # inlier_ampazi_df = self.amp_azimath_th(MELCOfile, ampth)
         # if cosfitting:
         #     #MELCO
-        #     #output_folder = r'E:\workspace\MMSProbe_2022\data\MWR_results\vison/' + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-        #     output_folder = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\fig/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-        #     fig_output_folder = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc\fit_best/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+        #     #output_folder = r'E:/workspace/MMSProbe_2022/data/MWR_results/vison/' + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+        #     output_folder = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/fig/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+        #     fig_output_folder = r"C:/Users/kenta shimoyama/Documents/amanolab/melco/generate_mvp/mwr+aqloc/fit_best/" + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
         #     os.mkdir(output_folder)
         #     os.mkdir(fig_output_folder)
         #     outcsv_name = MELCOfile.split(".")[0] + "_"+str(ampth)+"azi_cosinlier.csv"
         #     #not MELCO
-        #     folder = r'E:\MELCO\data\vison\IWR1443\1669780881.6607308/*.csv'
+        #     folder = r'E:/MELCO/data/vison/IWR1443/1669780881.6607308/*.csv'
         #     files = glob.glob(folder)
         #     files.sort()
         #     popts = []

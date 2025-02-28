@@ -12,6 +12,7 @@ visualization.py　　　　　全フレームの直線を統合し, ビジュ�
 separate_8sec.py          8秒ごとに点分割, 地面点群除去, amplitudeによる処理
 execute_mvm.py            すべてをまとめて実行
 config.py                 パラメータ、ディレクトリを設定
+gen_straightmapcsv.py     8秒ごとに作成した直線近似結果から端点を抽出し, mwrベクター地図の形式でcsvファイルに保存する
 
 以下モーションステレオ関係。
 calc_wc_gen_ortho.py      未完成ファイル。
@@ -26,12 +27,11 @@ write_pose.py             aqlocの時系列位置情報から、yaw角を推定�
 
 
 MWRマップ作製時のファイル実行順
-config.py →　gpggato19.py → mwrunixtoutc.py → mwrsplitcsv.py → mwrsymbolcsv_finalver.py → separate_8sec → groundpoint_removal.py → EgoMotion_mwr+aqloc.py → visualization.py
-もしくは
-config.py → gpggato19.py　→　execute_mvm.py									
+・バラバラに実行したい場合...
+config.py →　gpggato19.py → mwrunixtoutc.py → mwrsplitcsv.py → mwrsymbolcsv_finalver.py → separate_8sec → groundpoint_removal.py → EgoMotion_mwr+aqloc.py → visualization.py→gen_straightmacsv.py
 
-LiDARによる喜久井町のリファレンス点群は以下に保存
-https://waseda.box.com/s/lwp6gdfnd995rsbfmewvq9tace1quj37
+・一括で実行したい場合...
+config.py → execute_mvm.py →　gen_straightmacsv.py								
 
 フォルダ
 

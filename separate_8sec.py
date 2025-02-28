@@ -123,11 +123,12 @@ class SeparateMwr():
         self.timeseg = sc.timeseg
 
     def sep_8sec(self, filename):
-        input_file = self.home_dir + "\\mwr+aqloc\\" + filename
+        input_file = self.home_dir + "/mwr+aqloc/" + filename
         data = pd.read_csv(input_file)
 
         # unixtimeを取得
         unixtime = data.iloc[:, 3].values  # 3列目のunixtimeを取得
+        
 
         # 8秒ごとにデータを分割するための配列を初期化
         split_data = []
@@ -157,7 +158,7 @@ class SeparateMwr():
                 print(f"Chunk {i}:")
                 print(chunk)
 
-        output_directory = self.home_dir + "\\frame_mwr+aqloc\\" + filename.split(".")[0]
+        output_directory = self.home_dir + "/frame_mwr+aqloc/" + filename.split(".")[0]
         if os.path.exists(output_directory) and os.path.isdir(output_directory):
             shutil.rmtree(output_directory)  # ディレクトリを削除
             print(f"{output_directory} は削除されました。")
@@ -171,7 +172,7 @@ class SeparateMwr():
             df = pd.DataFrame(data)
             # 保存
             df.to_csv(
-            output_directory + "\\points_frame" + str(i + 1) + ".csv", 
+            output_directory + "/points_frame" + str(i + 1) + ".csv", 
             mode='w', 
             header=False, 
             index=False

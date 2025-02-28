@@ -100,10 +100,9 @@ class Gpggato19():
 
     def main(self, file_name):
         # file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\aqloc/"+file_name
-        file = self.home_dir + "\\aqloc\\"+file_name
+        file = self.home_dir + "/aqloc/" + file_name
 
         # file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\MMSProbe_2024\data\20240123_VISON\AQLOC/012503"
-
 
         with open(file+".log", "r") as log_file, open(file+".csv", "w", newline="") as csv_file:
             writer = csv.writer(csv_file)

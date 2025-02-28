@@ -39,11 +39,16 @@ class MwrSymbolCsv():
         data_list = []
         data_listt = []
 
-        IWR_DIR = self.home_dir + "\mwr/"+iwrdirname
-        AQLOC_FILE = self.home_dir + '\\aqloc\\'+aqlocfilename
+        IWR_DIR = self.home_dir + "/mwr/"+iwrdirname
+        AQLOC_FILE = self.home_dir + '/aqloc/'+aqlocfilename
+
+        # print(sorted(os.listdir(IWR_DIR), key=float))
+        IWR_FILE_list = sorted(os.listdir(IWR_DIR),key=lambda x: float(os.path.splitext(x)[0]))
+        
 
         # ディレクトリ内のCSVファイルを順に読込
-        for filename in os.listdir(IWR_DIR):
+        # for filename in os.listdir(IWR_DIR):
+        for filename in IWR_FILE_list:
 
             if filename.endswith(".csv"): # CSVファイルのみ処理する
                 filepath = os.path.join(IWR_DIR, filename)
@@ -53,6 +58,8 @@ class MwrSymbolCsv():
                 #IWRのタイムスタンプに近いAQLOCの行を探索
                 min_diff = float("inf")
                 closest_value = None
+
+                # print(IWR_TIMESTAMP) 
 
                 with open(AQLOC_FILE, "r", encoding="utf-8_sig") as csvfile:
                     csvreader = csv.reader(csvfile)
@@ -82,14 +89,16 @@ class MwrSymbolCsv():
 
                     #IWR1frameのシンボルx,yを格納
                     with open(filepath, "r", encoding="utf-8") as csvfile:
+                        print(filepath)
                         csvreader = csv.reader(csvfile)
                         header = next(csvreader)
                         for row in csvreader:
                             print(f"processing mwr+gnss ... iwrfilename : {iwrdirname} , frame : {time}")
-
+                            print(row)
                             # IWR1frameでの位置
                             # qx = float(row[14])
                             # qy = float(row[15])
+                            # print(row[2], row[3], row[4])
 
                             qx = float(row[3])
                             qy = float(row[4])
@@ -154,7 +163,7 @@ class MwrSymbolCsv():
                             v = float(row[6])
 
                             data_list.append([iwrx, iwry, amplitude, timestanp, qx, qy, v])
-
+        
         # x, y データを取得
         x_list = [data[0] for data in data_list]
         y_list = [data[1] for data in data_list]
@@ -166,7 +175,8 @@ class MwrSymbolCsv():
 
         # csv_file = 'C:/workspace/MELCO/data/melcomwr/230605_194737459_008/symbols.csv'
         #csv_file = 'C:\workspace\MELCO\data/20240123_VISON\MWR/240125_144504261_vison012503r/symbols80.csv'
-        csv_file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc/"+finalfilename
+        # csv_file = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr+aqloc/"+finalfilename
+        csv_file = self.home_dir + "/mwr+aqloc/" + finalfilename
         if os.path.exists(csv_file):
             os.remove(csv_file)  # ファイルを削除
             print(f"{csv_file} は削除されました。")
@@ -207,7 +217,7 @@ class MwrSymbolCsv():
                             if diff < min_diff:
                                 min_diff = diff
                                 time = AQLOC_TIME
-                                timerow = row
+                                timetimerow = row
 
                 # if timerow[3] != '#DIV/0!':
                 if len(timerow) != 3:

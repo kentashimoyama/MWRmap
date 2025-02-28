@@ -25,7 +25,7 @@ class MwrSplit():
             # 14列目の数字ごとにCSVを分割するためのディレクトリを作成
             #output_directory = "C:\workspace\MELCO\data/20240123_VISON\MWR/240125_151137862_vison012506r/csv80"
             # output_directory = r"C:\Users\kenta shimoyama\Documents\amanolab\melco\generate_mvp\mwr/"+output_dir
-            output_directory = self.home_dir + "\mwr/"+output_dir
+            output_directory = self.home_dir + "/mwr/"+output_dir
             if os.path.exists(output_directory) and os.path.isdir(output_directory):
                 shutil.rmtree(output_directory)  # ディレクトリを削除
                 print(f"{output_directory} は削除されました。")
@@ -36,26 +36,55 @@ class MwrSplit():
             # 分割されたCSVファイルの書き込みハンドルを格納するディクショナリ
             output_files = {}
             i = 0
-            for row in reader:
-                # print(i)
-                target_value = row[target_column_index]
 
-                # 対応するファイルハンドルを取得するか、存在しない場合は新規に作成する
+            for row in reader:
+                target_value = row[target_column_index]
+                # print(row)
+
+                # 対応するファイルハンドルを取得するか、新規に作成する
                 if target_value not in output_files:
                     output_file = os.path.join(output_directory, f"{target_value}.csv")
-                    output_files[target_value] = open(output_file, 'w', newline='')
-                    writer = csv.writer(output_files[target_value])
-                    #writer.writerow(header)  # ヘッダー行を書き込む
+                    
+                    # with文を使用してファイルを書き込む
+                    with open(output_file, 'w', newline='') as outfile:
+                        output_files[target_value] = outfile
+                        writer = csv.writer(outfile)
+                        # writer.writerow(header)  # ヘッダー行を書き込む
+                        writer.writerow(row)  # 行を書き込む
+                        # print(f"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:{i}")
+                        # output_file = os.path.join(output_directory, f"{target_value}.csv")
+                       
+                        i += 1
                 else:
-                    writer = csv.writer(output_files[target_value])
+                    # 既存のファイルに書き込む
+                    with open(os.path.join(output_directory, f"{target_value}.csv"), 'a', newline='') as outfile:
+                        writer = csv.writer(outfile)
+                        writer.writerow(row)  # 行を書き込む
+                        # print(f"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:{i}")
+                        i += 1
+                
+            # exit()
 
-                writer.writerow(row)  # 行を書き込む
+            # for row in reader:
+            #     # print(i)
+            #     target_value = row[target_column_index]
 
-                i+=1
+            #     # 対応するファイルハンドルを取得するか、存在しない場合は新規に作成する
+            #     if target_value not in output_files:
+            #         output_file = os.path.join(output_directory, f"{target_value}.csv")
+            #         output_files[target_value] = open(output_file, 'w', newline='')
+            #         writer = csv.writer(output_files[target_value])
+            #         #writer.writerow(header)  # ヘッダー行を書き込む
+            #     else:
+            #         writer = csv.writer(output_files[target_value])
 
-            # ファイルハンドルを閉じる
-            for file in output_files.values():
-                file.close()
+            #     writer.writerow(row)  # 行を書き込む
+
+            #     i+=1
+
+            # # ファイルハンドルを閉じる
+            # for file in output_files.values():
+            #     file.close()
         
 
 # input_filename = "20240717_1721193682_adv_111_right_utc.csv"
